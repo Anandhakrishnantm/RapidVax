@@ -493,14 +493,14 @@ def check_avail(doc,dt,tm, hsptl):
 
 from twilio.rest import Client
 auth_token = 'auth-token'
-account_sid = 'account-sid'
+account_sid = 'acoount-sid'
 client = Client(account_sid, auth_token)
 
-def send_wts_message(message):
+def send_wts_message(number, message):
     message = client.messages.create(
         from_='whatsapp:+14155238886',
         body=message,
-        to='whatsapp:+918113809231'
+        to='whatsapp:+91'+number
     )
 
 def send_sms(number, message):
@@ -520,6 +520,7 @@ from django.contrib.auth.models import User
 def bookapp_view(request):
     if check_patient(request.user):
         pat=Patient.objects.get(user_id=request.user.id)
+        
         hospitals = Admin.objects.all()
         
         
@@ -561,9 +562,10 @@ def bookapp_view(request):
 
                         vaccine_name = appointmentForm.cleaned_data.get('description')
                         app_date = appointmentForm.cleaned_data.get('calldate')
-                        message_content = f"Booking Successfull\nVaccine: {vaccine_name}\nDate: {app_date}"
-                        send_sms("8113809231", message_content)
-                        send_wts_message(message_content)
+                        app_time = appointmentForm.cleaned_data.get('calltime')
+                        message_content = f"Booking Successfull\nVaccine: {vaccine_name}\nDate: {app_date}\nTime: {app_time}"
+                        send_sms(str(pat.postalcode), message_content)
+                        send_wts_message(str(pat.postalcode), message_content)
                         return redirect('bookapp.html')
                     else:
                         appointmentForm.add_error('calldate', 'Invalid date.')
@@ -1756,9 +1758,12 @@ def home_worker(request):
         messages.success(request, "Booked Successfully.")
 
 
-        message_content = f"Booking Successfull\nVaccine: {description}\nDate: {calldate}"
-        send_sms("8113809231", message_content)
-        send_wts_message(message_content)
+        message_content_worker = f"Booking Successfull\nVaccine: {description}\nDate: {calldate}\nTime{calltime}"
+        message_content_patient = f"Booking Done by {worker.user}\nVaccine: {description}\nDate: {calldate}\nTime: {calltime}"
+        send_sms(str(patient.postalcode), message_content_patient)
+        send_wts_message(str(patient.postalcode), message_content_patient)
+        send_sms(str(worker.phone_number), message_content_worker)
+        send_wts_message(str(worker.phone_number), message_content_worker)
 
 
 
