@@ -1,0 +1,202 @@
+{% load static %}
+{% load widget_tweaks %}
+<!--
+=========================================================
+* Material Dashboard Dark Edition - v2.1.0
+=========================================================
+
+* Product Page: https://www.creative-tim.com/product/material-dashboard-dark
+* Copyright 2019 Creative Tim (http://www.creative-tim.com)
+
+* Coded by www.creative-tim.com
+
+=========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" type="image/png" href="https://i.postimg.cc/VsSWmgmQ/syringe.png">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <title>vaccination Management System</title>
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+  <!--     Fonts and icons     -->
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+  <!-- CSS Files -->
+  <link href="{% static 'assets/css/material-dashboard.css'%}" rel="stylesheet" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      var dragTheme = window.localStorage.getItem('checkbox');
+      if(dragTheme==="true"){
+        $("#jhamela").removeClass("darkEdition");
+          window.localStorage.setItem('checkbox', true);
+          var dragTheme = window.localStorage.getItem('checkbox');
+          console.log(dragTheme);
+          $("#checkbox").click();
+      }
+      $("#checkbox").click(function(){
+        if($('#checkbox').prop("checked")){
+          $("#jhamela").removeClass("darkEdition");
+          window.localStorage.setItem('checkbox', true);
+          var dragTheme = window.localStorage.getItem('checkbox');
+          console.log(dragTheme); 
+        }
+        else{
+          $("#jhamela").addClass("darkEdition");
+          window.localStorage.setItem('checkbox', false);
+          var dragTheme = window.localStorage.getItem('checkbox');
+          console.log(dragTheme); 
+        }
+      });
+    });
+  </script>
+  <style>
+
+ .container {
+     padding-top: 100px !important;
+ }
+ .box {
+   background-color: azure;
+  border-radius: 25px;
+  border: 5px solid #28acea;
+  padding: 10px;  
+  margin-left: 10%;
+  margin-right: 20%;
+}
+.list{
+  text-align: left;
+}
+  </style>
+  
+</head>
+
+<body id="jhamela" class="darkEdition lightEdition">
+  {% include "hospital/Home/preloader.html" %}
+
+  <div id="myDiv" class="animate-bottom wrapper" style="display:none;text-align: center;position: relative;">
+    <div class="sidebar" data-color="azure" data-background-color="black" data-image="{% static 'assets/img/sidebar-2.jpg'%}">
+      <!--
+        Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
+
+        Tip 2: you can also add an image using data-image tag
+    -->
+    <div class="logo"><a href="#" class="simple-text logo-normal">
+      <img src="https://i.postimg.cc/VsSWmgmQ/syringe.png" height=40 width=40>
+      <br> 
+      RAPIDVAX
+      </a></div>
+    <div class="sidebar-wrapper">
+      <ul class="nav">
+       
+        <li class="nav-item ">
+          <a class="nav-link" href="{% url 'profile_pat.html' %}">
+            <i class="material-icons">person</i>
+            <p>Profile</p>
+          </a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link" href="{% url 'bookapp.html' %}">
+            <i class="material-icons">content_paste</i>
+            <p>Book Appointment</p>
+          </a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link" href="{% url 'admit_details.html' %}">
+            <i class="material-icons">content_paste</i>
+            <p>Vaccinations</p>
+          </a>
+        </li>
+        <li class="nav-item active  ">
+          <a class="nav-link" href="{% url 'yourhealth.html' %}">
+            <i class="material-icons">favorite</i>
+            <p>Child Health</p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'feedback.html' %}">
+            <i class="material-icons">bubble_chart</i>
+            <p>Feedback</p>
+          </a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link" href="{% url 'logout' %}">
+            <i class="material-icons">logout</i>
+            <p>Logout</p>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+    <div class="main-panel">
+      <br><br>
+      <h1 style="color: #28acea">Child Health</h1>
+      <br><br>
+      <p style="color: white;">
+        {% if total_days > 5840 %}
+        Next Vaccine<b>TT2</b>
+        {% elif total_days > 3650 %}
+        Next Vaccine<b>TT1</b>
+        {% elif total_days > 1825 %}
+        {% if total_days < 2190 %} Next Vaccine <b> DPT 2nd Booster</b>
+          {% endif %}
+          {% elif total_days > 480 %}
+          {% if total_days %}
+          Next Vaccine<b>MMR-1,OPV Booster,DPT 1st Booster,JE Vaccine-2</b>
+          {% endif %}
+          {% elif total_days > 270 %}
+          Next Vaccine<b> MMR-1, /MR/Measels,JE Vaccine-1</b>
+          {% elif total_days > 98 %}
+          Next Vaccine<b> OPV3,Penta3(DPT+HepB+HiB), IPV</b>
+          {% elif total_days > 70 %}
+          Next Vaccine<b>OPV2, Penta2(DPT+HepB+HiB)</b>
+          {% elif total_days > 1 %}
+          Next Vaccine:<b>OPV1, Penta1(DPT+HepB+HiB)</b>
+          {% endif %}
+        </p>
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+      <div class="container">
+        <div class="box">
+          <h1 style="font-size: 30px; color: #28acea">Basic Information</h1><hr><br>
+          <p class="list"><img src="https://img.icons8.com/color/26/000000/christmas-star.png" class="mr-1 " width="19" height="19" id="star" style="align-self: left;"> <b>Name:</b> {{ pat.user.username }}</p>
+          <p class="list"><img src="https://img.icons8.com/color/26/000000/christmas-star.png" class="mr-1 " width="19" height="19" id="star" style="align-self: left;"> <b>Age:</b> {% if years %}{{ years }} years{% endif %}{% if months %} {{ months }} months{% endif %} {% if days %}{{ days }} day{% endif %}</p>
+          <p class="list"><img src="https://img.icons8.com/color/26/000000/christmas-star.png" class="mr-1 " width="19" height="19" id="star" style="align-self: left;"> <b>Height:</b> {{ info.height }} cm</p>
+          <p class="list"><img src="https://img.icons8.com/color/26/000000/christmas-star.png" class="mr-1 " width="19" height="19" id="star" style="align-self: left;"> <b>Weight:</b> {{ info.weight }} kg</p>
+        </div>
+        <br><br>
+        <div class="box">
+          <h1 style="font-size: 30px; color: #28acea">Vaccine Schedule</h1><hr><br>
+          <div>
+           <b> Birth </b> : BCG,OPV(0),Hep B Birth dose(To be given at the place of delivery) <br>
+<br>
+ <b>6 Weeks</b> : OPV1, Penta1(DPT+HepB+HiB) <br><br>
+
+<b>10 Weeks</b> : OPV2, Penta2(DPT+HepB+HiB) <br><br>
+
+ <b>14 Weeks </b>: OPV3,Penta3(DPT+HepB+HiB), IPV <br><br>
+
+<b> 9 Months</b> : MMR-1, /MR/Measels,JE Vaccine-1 <br><br>
+
+<b> 16-24 Months</b> : MMR-1,OPV Booster,DPT 1st Booster,JE Vaccine-2 <br><br>
+
+<b> 5-6 Years</b> : DPT 2nd Booster <br><br>
+
+<b>10 Years</b> : TT1 <br><br>
+
+ <b>16 Years</b> : TT2 <br><br>
+          </div>
+        </div>
+        <br><br>
+      </div>
+      </form>
+      <br><br><br>
+      {% include "hospital/Patient/footer.html" %}
+    </div>
+  </div>
+</body>
+</html>
